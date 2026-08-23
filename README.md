@@ -4,7 +4,7 @@ A Week-2 MVP for organizing **invented/demo** economic evidence into a traceable
 
 ## Current scope: Commit 2
 
-The app includes a runnable Next.js/Tailwind shell, fixed fictional demo accounts, Supabase database migrations, seed data, deny-by-default Row Level Security, and private demo evidence intake. Extraction, corrections, and packet generation arrive in later commits.
+The app includes a runnable Next.js/Tailwind shell, fixed fictional demo accounts, Supabase database migrations, seed data, deny-by-default Row Level Security, private demo evidence intake, and structured extraction with confidence and audit history. Corrections and packet generation arrive in later commits.
 
 ## Non-negotiable product limits
 
@@ -25,6 +25,7 @@ The app includes a runnable Next.js/Tailwind shell, fixed fictional demo account
 - Files are accepted only as PDF, JPG, PNG, or TXT up to 10 MB, and are uploaded through short-lived signed URLs to a non-public Supabase Storage bucket.
 - Intake endpoints apply a per-user request limit; production should replace this MVP's process-local limiter with a shared rate-limit store.
 - LLM services must never be allowed to set evidence verification status or make lending decisions.
+- The extraction prompt and server workflow limit LLM output to structured fields and confidence. Confidence is not verification, and only a human reviewer can verify evidence.
 
 ## Run locally
 
@@ -47,3 +48,9 @@ The demo identities and evidence are fabricated. Do not apply the seed file to a
 ## Private demo intake
 
 After signing in, the Evidence page validates the title, allowlisted category, optional document date, file name/type, size, SHA-256 hash, and an explicit demo-only attestation. The server issues a short-lived signed upload URL scoped to one private object, then verifies metadata before saving the fictional evidence record, provenance record, and creation audit event. Association-derived categories are rejected and are never stored as evidence.
+
+## Structured extraction
+
+Use the fictional applicant account to run extraction on a seeded record or a private upload. Each run appends an `evidence_extractions` record and a transformation audit event that includes extraction version, fields, confidence, and uncertainty routing. Any missing or below-0.80 confidence field creates an open human-review item and sets evidence to `pending_review`; this is never verification.
+
+With no `LLM_API_KEY`, the app uses a deterministic mock extractor so the demo remains runnable. When configured, the LLM adapter sends private evidence only for structured extraction and validates the returned JSON before saving it. It is instructed and technically constrained not to verify, score, rank, recommend, predict approval, or make lending decisions.
