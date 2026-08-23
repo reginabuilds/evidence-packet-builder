@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const evidence = [
   { title: "Mercado sales log", type: "Self-reported activity note", status: "Pending review", date: "20 Aug 2026" },
   { title: "Mobile-wallet deposit", type: "Deposit record", status: "Unverified", date: "18 Aug 2026" },
@@ -19,7 +21,10 @@ export default function HomePage() {
             <p className="mb-1 text-sm font-bold uppercase tracking-[0.14em] text-[#1f5a3a]">Evidence Packet Builder</p>
             <h1 className="m-0 text-3xl font-bold tracking-tight">Demo evidence workspace</h1>
           </div>
-          <span className="w-fit rounded-full bg-white px-3 py-1.5 text-sm font-semibold text-[#1f5a3a] shadow-sm">Demo data — invented evidence only</span>
+          <div className="flex items-center gap-3">
+            <Link href="/login" className="text-sm font-bold text-[#1f5a3a] underline">Demo sign-in</Link>
+            <span className="w-fit rounded-full bg-white px-3 py-1.5 text-sm font-semibold text-[#1f5a3a] shadow-sm">Demo data — invented evidence only</span>
+          </div>
         </header>
 
         <div className="grid gap-6 lg:grid-cols-[220px_1fr]">
