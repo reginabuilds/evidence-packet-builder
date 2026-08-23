@@ -4,7 +4,7 @@ A Week-2 MVP for organizing **invented/demo** economic evidence into a traceable
 
 ## Current scope: Commit 2
 
-The app includes a runnable Next.js/Tailwind shell, fixed fictional demo accounts, Supabase database migrations, seed data, deny-by-default Row Level Security, private demo evidence intake, structured extraction, applicant correction/exclusion workflows, and an assigned human-review queue. Packet generation arrives in a later commit.
+The app includes a runnable Next.js/Tailwind shell, fixed fictional demo accounts, Supabase database migrations, seed data, deny-by-default Row Level Security, private demo evidence intake, structured extraction, applicant correction/exclusion workflows, an assigned human-review queue, and immutable applicant-authorized Evidence Packets.
 
 ## Non-negotiable product limits
 
@@ -62,3 +62,9 @@ Applicants may correct an extracted material field only after extraction exists,
 ## Human review
 
 Sign in as the fictional reviewer and open `/review`. The queue returns only items assigned to that reviewer and exposes the evidence source/provenance, structured extraction with confidence, corrections, and transformation history. A reviewer must supply a resolution note and can resolve only their assigned case as `verified`, `rejected`, or `needs_applicant_clarification`. The API verifies both the authenticated reviewer role and case assignment before it writes the review resolution, evidence status, and reviewer audit event. No LLM, upload process, or other automated workflow can write a verification outcome.
+
+## Evidence Packets and release control
+
+The fictional applicant selects only eligible, non-excluded, non-rejected evidence at `/packets` and must explicitly authorize the exact selection before generation. Generation rechecks ownership, case scope, applicant exclusions, human-review rejections, and the Association Firewall; the packet then stores a JSON snapshot containing provenance, verification status, corrections, review state, transformation history, authorization timestamp, selected evidence IDs, timestamp, version, required disclosure, and SHA-256 hash. Database triggers prevent packet snapshot updates or deletion.
+
+Authorization may be revoked with a required reason. Revocation preserves the immutable packet and authorization-event history, but blocks new generation and JSON-download actions. Packet download also writes an audit event. Packets never contain a credit score, recommendation, approval probability, or lending decision.
