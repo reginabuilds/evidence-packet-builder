@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { EvidenceIntakeForm } from "@/components/EvidenceIntakeForm";
 
 const evidence = [
   { title: "Mercado sales log", type: "Self-reported activity note", status: "Pending review", date: "20 Aug 2026" },
@@ -51,6 +52,8 @@ export default function HomePage() {
                 <button type="button" disabled className="rounded-lg bg-[#1f5a3a] px-4 py-2.5 text-sm font-bold text-white opacity-55">Upload evidence — next step</button>
               </div>
             </section>
+
+            <EvidenceIntakeForm />
 
             <section aria-labelledby="evidence-heading" className="rounded-2xl border border-[#dfe4dc] bg-white shadow-sm">
               <div className="flex items-center justify-between border-b border-[#dfe4dc] p-5">
