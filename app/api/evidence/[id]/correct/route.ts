@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { validateCorrection } from "@/lib/evidence-correction";
 import { evidenceExtractionSchema } from "@/lib/evidence-extraction";
+import { applyApplicantCorrection } from "@/lib/correction-history";
 import { enforceEvidenceIntakeRateLimit } from "@/lib/rate-limit";
 import { createSupabaseAdminClient, getAuthenticatedUser } from "@/lib/supabase/server";
 import { assignedReviewerId } from "@/lib/reviewer-access";
@@ -33,13 +34,14 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
     if (extractionError || !latest) throw new Error("Run structured extraction before making a correction.");
 
     const original = evidenceExtractionSchema.parse(latest.extracted_json);
-    const corrected = evidenceExtractionSchema.parse({ ...original, [correction.field]: correction.value });
+    const { originalValue, corrected } = applyApplicantCorrection(original, correction);
+    evidenceExtractionSchema.parse(corrected);
     const nextVersion = latest.version + 1;
     const { error: correctionError } = await admin.from("evidence_corrections").insert({
       evidence_id: evidence.id,
       extraction_version: nextVersion,
       field_name: correction.field,
-      original_value_json: original[correction.field],
+      original_value_json: originalValue,
       corrected_value_json: correction.value,
       correction_reason: correction.reason,
       corrected_by: user.id,
@@ -65,7 +67,7 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
       event_type: "corrected",
       actor_id: user.id,
       actor_role: "applicant",
-      old_value_json: { extraction_version: latest.version, field: correction.field, value: original[correction.field], verification_status: evidence.verification_status },
+      old_value_json: { extraction_version: latest.version, field: correction.field, value: originalValue, verification_status: evidence.verification_status },
       new_value_json: { extraction_version: nextVersion, field: correction.field, value: correction.value, verification_status: "pending_review" },
       reason: correction.reason,
     });
@@ -75,7 +77,7 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
       evidence_id: evidence.id,
       case_id: evidence.case_id,
       reason_code: "applicant_correction",
-      details_json: { extraction_version: nextVersion, field: correction.field, original_value: original[correction.field], corrected_value: correction.value },
+      details_json: { extraction_version: nextVersion, field: correction.field, original_value: originalValue, corrected_value: correction.value },
       state: "open",
       assigned_reviewer_id: reviewerId,
     });

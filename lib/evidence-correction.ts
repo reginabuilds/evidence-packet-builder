@@ -20,6 +20,7 @@ export function validateCorrection(value: unknown): CorrectionInput {
   let validated: string | number | null;
 
   if (candidate === null) {
+    if (input.field === "evidenceType") throw new Error("Evidence type cannot be empty.");
     validated = null;
   } else if (input.field === "amount") {
     validated = z.number().finite().nonnegative().max(1_000_000_000).parse(candidate);

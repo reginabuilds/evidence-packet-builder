@@ -4,6 +4,7 @@ import { EVIDENCE_BUCKET } from "@/lib/evidence-intake";
 import { enforceEvidenceIntakeRateLimit } from "@/lib/rate-limit";
 import { createSupabaseAdminClient, getAuthenticatedUser } from "@/lib/supabase/server";
 import { assignedReviewerId } from "@/lib/reviewer-access";
+import { reviewRoutingForUncertainty } from "@/lib/review-routing";
 
 export const runtime = "nodejs";
 
@@ -40,6 +41,7 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
       content,
     });
     const uncertain = uncertainFields(result.extraction);
+    const reviewRouting = reviewRoutingForUncertainty(uncertain);
     const { data: latestExtraction } = await admin
       .from("evidence_extractions")
       .select("version")
@@ -60,7 +62,7 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
     });
     if (extractionError) throw new Error("Structured extraction could not be saved.");
 
-    const nextStatus = uncertain.length > 0 ? "pending_review" : evidence.verification_status;
+    const nextStatus = reviewRouting?.verificationStatus ?? evidence.verification_status;
     const { error: updateError } = await admin.from("evidence_items").update({ current_version: version, verification_status: nextStatus }).eq("id", evidence.id);
     if (updateError) throw new Error("Evidence extraction state could not be updated.");
 
@@ -75,11 +77,11 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
     });
     if (auditError) throw new Error("Extraction audit event could not be recorded.");
 
-    if (uncertain.length > 0) {
+    if (reviewRouting) {
       const { error: reviewError } = await admin.from("review_items").insert({
         evidence_id: evidence.id,
         case_id: evidence.case_id,
-        reason_code: "low_confidence",
+        reason_code: reviewRouting.reasonCode,
         details_json: { extraction_version: version, uncertain_fields: uncertain },
         state: "open",
         assigned_reviewer_id: reviewerId,
