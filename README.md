@@ -4,7 +4,7 @@ A Week-2 MVP for organizing **invented/demo** economic evidence into a traceable
 
 ## Current scope: Commit 2
 
-The app includes a runnable Next.js/Tailwind shell, fixed fictional demo accounts, Supabase database migrations, seed data, deny-by-default Row Level Security, private demo evidence intake, and structured extraction with confidence and audit history. Corrections and packet generation arrive in later commits.
+The app includes a runnable Next.js/Tailwind shell, fixed fictional demo accounts, Supabase database migrations, seed data, deny-by-default Row Level Security, private demo evidence intake, structured extraction, and applicant correction/exclusion workflows. Packet generation arrives in a later commit.
 
 ## Non-negotiable product limits
 
@@ -54,3 +54,7 @@ After signing in, the Evidence page validates the title, allowlisted category, o
 Use the fictional applicant account to run extraction on a seeded record or a private upload. Each run appends an `evidence_extractions` record and a transformation audit event that includes extraction version, fields, confidence, and uncertainty routing. Any missing or below-0.80 confidence field creates an open human-review item and sets evidence to `pending_review`; this is never verification.
 
 With no `LLM_API_KEY`, the app uses a deterministic mock extractor so the demo remains runnable. When configured, the LLM adapter sends private evidence only for structured extraction and validates the returned JSON before saving it. It is instructed and technically constrained not to verify, score, rank, recommend, predict approval, or make lending decisions.
+
+## Applicant corrections and exclusions
+
+Applicants may correct an extracted material field only after extraction exists, and must state a reason. The system preserves the original extracted value, writes an append-only correction record, creates a new structured-data version, logs the transformation, sets the item to `pending_review`, and opens a human-review item. Applicants cannot set any verification status, including `verified`. Applicants can also exclude irrelevant evidence from future packets with a required reason; exclusion preserves, rather than deletes, its audit history.

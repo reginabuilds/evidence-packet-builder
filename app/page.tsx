@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { EvidenceIntakeForm } from "@/components/EvidenceIntakeForm";
 import { ExtractionButton } from "@/components/ExtractionButton";
+import { EvidenceCorrectionPanel } from "@/components/EvidenceCorrectionPanel";
 
 const evidence = [
   { id: "b1111111-1111-1111-1111-111111111111", title: "Mercado sales log", type: "Self-reported activity note", status: "Pending review", date: "20 Aug 2026" },
@@ -71,6 +72,7 @@ export default function HomePage() {
                       <h3 className="m-0 font-bold">{item.title}</h3>
                       <p className="mb-0 mt-1 text-sm text-[#657065]">{item.type} · Source and audit timeline available in the next build step</p>
                       <ExtractionButton evidenceId={item.id} title={item.title} />
+                      <EvidenceCorrectionPanel evidenceId={item.id} />
                     </div>
                     <div className="text-left sm:text-right">
                       <span className={`rounded-full px-2.5 py-1 text-xs font-bold ${item.status === "Verified" ? "bg-[#e4f2e8] text-[#1f5a3a]" : item.status === "Pending review" ? "bg-[#fff1d6] text-[#9a5a00]" : "bg-[#eef0ee] text-[#4b554c]"}`}>{item.status}</span>
