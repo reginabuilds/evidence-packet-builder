@@ -4,7 +4,7 @@ A Week-2 MVP for organizing **invented/demo** economic evidence into a traceable
 
 ## Current scope: Commit 2
 
-The app includes a runnable Next.js/Tailwind shell, fixed fictional demo accounts, Supabase database migrations, seed data, deny-by-default Row Level Security, private demo evidence intake, structured extraction, and applicant correction/exclusion workflows. Packet generation arrives in a later commit.
+The app includes a runnable Next.js/Tailwind shell, fixed fictional demo accounts, Supabase database migrations, seed data, deny-by-default Row Level Security, private demo evidence intake, structured extraction, applicant correction/exclusion workflows, and an assigned human-review queue. Packet generation arrives in a later commit.
 
 ## Non-negotiable product limits
 
@@ -58,3 +58,7 @@ With no `LLM_API_KEY`, the app uses a deterministic mock extractor so the demo r
 ## Applicant corrections and exclusions
 
 Applicants may correct an extracted material field only after extraction exists, and must state a reason. The system preserves the original extracted value, writes an append-only correction record, creates a new structured-data version, logs the transformation, sets the item to `pending_review`, and opens a human-review item. Applicants cannot set any verification status, including `verified`. Applicants can also exclude irrelevant evidence from future packets with a required reason; exclusion preserves, rather than deletes, its audit history.
+
+## Human review
+
+Sign in as the fictional reviewer and open `/review`. The queue returns only items assigned to that reviewer and exposes the evidence source/provenance, structured extraction with confidence, corrections, and transformation history. A reviewer must supply a resolution note and can resolve only their assigned case as `verified`, `rejected`, or `needs_applicant_clarification`. The API verifies both the authenticated reviewer role and case assignment before it writes the review resolution, evidence status, and reviewer audit event. No LLM, upload process, or other automated workflow can write a verification outcome.

@@ -3,6 +3,7 @@ import { extractStructuredEvidence, uncertainFields } from "@/lib/evidence-extra
 import { EVIDENCE_BUCKET } from "@/lib/evidence-intake";
 import { enforceEvidenceIntakeRateLimit } from "@/lib/rate-limit";
 import { createSupabaseAdminClient, getAuthenticatedUser } from "@/lib/supabase/server";
+import { assignedReviewerId } from "@/lib/reviewer-access";
 
 export const runtime = "nodejs";
 
@@ -19,6 +20,7 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
       .eq("owner_id", user.id)
       .single();
     if (evidenceError || !evidence) throw new Error("Evidence was not found for this applicant.");
+    const reviewerId = await assignedReviewerId(admin, evidence.case_id);
 
     let content: Uint8Array | null = null;
     let mimeType: string | null = null;
@@ -80,6 +82,7 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
         reason_code: "low_confidence",
         details_json: { extraction_version: version, uncertain_fields: uncertain },
         state: "open",
+        assigned_reviewer_id: reviewerId,
       });
       if (reviewError) throw new Error("Uncertain evidence could not be routed to review.");
     }

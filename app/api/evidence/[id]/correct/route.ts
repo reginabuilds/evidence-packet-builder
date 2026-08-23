@@ -3,6 +3,7 @@ import { validateCorrection } from "@/lib/evidence-correction";
 import { evidenceExtractionSchema } from "@/lib/evidence-extraction";
 import { enforceEvidenceIntakeRateLimit } from "@/lib/rate-limit";
 import { createSupabaseAdminClient, getAuthenticatedUser } from "@/lib/supabase/server";
+import { assignedReviewerId } from "@/lib/reviewer-access";
 
 export const runtime = "nodejs";
 
@@ -20,6 +21,7 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
       .eq("owner_id", user.id)
       .single();
     if (evidenceError || !evidence) throw new Error("Evidence was not found for this applicant.");
+    const reviewerId = await assignedReviewerId(admin, evidence.case_id);
 
     const { data: latest, error: extractionError } = await admin
       .from("evidence_extractions")
@@ -75,6 +77,7 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
       reason_code: "applicant_correction",
       details_json: { extraction_version: nextVersion, field: correction.field, original_value: original[correction.field], corrected_value: correction.value },
       state: "open",
+      assigned_reviewer_id: reviewerId,
     });
     if (reviewError) throw new Error("Corrected evidence could not be sent to human review.");
 

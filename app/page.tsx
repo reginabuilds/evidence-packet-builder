@@ -33,11 +33,9 @@ export default function HomePage() {
         <div className="grid gap-6 lg:grid-cols-[220px_1fr]">
           <nav aria-label="Workspace" className="rounded-2xl border border-[#dfe4dc] bg-white p-3 shadow-sm">
             <p className="px-3 text-xs font-bold uppercase tracking-[0.12em] text-[#657065]">Pilot workspace</p>
-            {["Evidence", "Review queue", "Evidence packets"].map((item, index) => (
-              <button key={item} className={`mt-1 w-full rounded-lg px-3 py-2 text-left text-sm font-medium ${index === 0 ? "bg-[#1f5a3a] text-white" : "text-[#172018] hover:bg-[#f2f5f0]"}`} type="button">
-                {item}
-              </button>
-            ))}
+            <Link href="/" className="mt-1 block w-full rounded-lg bg-[#1f5a3a] px-3 py-2 text-left text-sm font-medium text-white">Evidence</Link>
+            <Link href="/review" className="mt-1 block w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-[#172018] hover:bg-[#f2f5f0]">Review queue</Link>
+            <button className="mt-1 w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-[#172018] hover:bg-[#f2f5f0]" type="button">Evidence packets</button>
             <div className="mt-5 border-t border-[#dfe4dc] px-3 pt-4 text-xs leading-5 text-[#657065]">
               Schema approved for pilot review. This MVP has no applicant onboarding.
             </div>
