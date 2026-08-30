@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import NewVerificationForm from '@/components/NewVerificationForm';
 import VerificationProgress from '@/components/VerificationProgress';
 import VerifiedResult from '@/components/VerifiedResult';
+import ProtocolOnlyView from '@/components/ProtocolOnlyView';
 import { INITIAL_TRUSTED_CONTACTS } from '@/lib/types';
 
 export default function HomeShell() {
@@ -15,6 +16,8 @@ export default function HomeShell() {
     requester: string;
     contactId: string;
     contactName: string;
+    status: 'pending' | 'verified' | 'protocol_only';
+    protocolReason?: 'cannot_confirm' | 'timeout' | 'uncertain';
   } | null>(null);
 
   const handleStartVerification = () => {
@@ -33,9 +36,41 @@ export default function HomeShell() {
       requester: requesterLabel,
       contactId: trustedContactId,
       contactName: contact ? contact.name : 'Contacto de confianza',
+      status: 'pending',
     });
 
     setView('in_progress');
+  };
+
+  const handleSetVerified = () => {
+    if (session?.status === 'protocol_only') return;
+
+    setSession((prev) =>
+      prev ? { ...prev, status: 'verified' } : null
+    );
+
+    setView('verified');
+  };
+
+  const handleSetProtocolOnly = (
+    reason: 'cannot_confirm' | 'timeout' | 'uncertain'
+  ) => {
+    setSession((prev) =>
+      prev
+        ? {
+            ...prev,
+            status: 'protocol_only',
+            protocolReason: reason,
+          }
+        : null
+    );
+
+    setView('protocol_only');
+  };
+
+  const handleReset = () => {
+    setSession(null);
+    setView('home');
   };
 
   return (
@@ -116,7 +151,7 @@ export default function HomeShell() {
 
       {view === 'new_verification' && (
         <NewVerificationForm
-          onCancel={() => setView('home')}
+          onCancel={handleReset}
           onSubmitSession={handleCreateSession}
         />
       )}
@@ -125,9 +160,16 @@ export default function HomeShell() {
         <VerificationProgress
           requesterLabel={session.requester}
           contactName={session.contactName}
-          onConfirm={() => setView('verified')}
-          onCannotConfirm={() => setView('protocol_only')}
-          onTimeout={() => setView('protocol_only')}
+          onConfirm={handleSetVerified}
+          onCannotConfirm={() =>
+            handleSetProtocolOnly('cannot_confirm')
+          }
+          onUncertain={() =>
+            handleSetProtocolOnly('uncertain')
+          }
+          onTimeout={() =>
+            handleSetProtocolOnly('timeout')
+          }
         />
       )}
 
@@ -135,46 +177,17 @@ export default function HomeShell() {
         <VerifiedResult
           requesterLabel={session.requester}
           contactName={session.contactName}
-          onReset={() => {
-            setSession(null);
-            setView('home');
-          }}
+          onReset={handleReset}
         />
       )}
 
-      {view === 'protocol_only' && (
-        <div className="w-full max-w-md bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mt-2 sm:mt-6 p-6 space-y-4">
-          <div className="bg-amber-600 text-white p-4 rounded-xl">
-            <span className="inline-block text-xs font-bold uppercase tracking-wider bg-amber-800 text-amber-100 px-2 py-0.5 rounded mb-1">
-              PROTOCOLO ONLY
-            </span>
-
-            <h3 className="font-bold text-base">
-              No se pudo verificar independientemente
-            </h3>
-          </div>
-
-          <div className="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-xl">
-            <p className="text-xs font-bold text-amber-900 mb-1">
-              No envíes el dinero todavía.
-            </p>
-
-            <p className="text-xs text-amber-800 leading-relaxed">
-              Family Shield no pudo establecer una verificación independiente
-              con tu contacto de confianza.
-            </p>
-          </div>
-
-          <button
-            onClick={() => {
-              setSession(null);
-              setView('home');
-            }}
-            className="w-full py-3 px-4 bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium rounded-xl transition text-xs text-center"
-          >
-            Volver al inicio
-          </button>
-        </div>
+      {view === 'protocol_only' && session && (
+        <ProtocolOnlyView
+          requesterLabel={session.requester}
+          contactName={session.contactName}
+          reason={session.protocolReason}
+          onReset={handleReset}
+        />
       )}
     </main>
   );
