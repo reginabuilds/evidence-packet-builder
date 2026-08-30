@@ -7,6 +7,7 @@ interface VerificationProgressProps {
   contactName: string;
   onConfirm: () => void;
   onCannotConfirm: () => void;
+  onUncertain: () => void;
   onTimeout: () => void;
 }
 
@@ -15,6 +16,7 @@ export default function VerificationProgress({
   contactName,
   onConfirm,
   onCannotConfirm,
+  onUncertain,
   onTimeout,
 }: VerificationProgressProps) {
   return (
@@ -86,10 +88,17 @@ export default function VerificationProgress({
             </button>
 
             <button
+              onClick={onUncertain}
+              className="w-full py-2.5 px-3 bg-amber-700 hover:bg-amber-800 text-white font-medium rounded-xl text-xs transition"
+            >
+              3. Respuesta con duda (Protocol Only)
+            </button>
+
+            <button
               onClick={onTimeout}
               className="w-full py-2.5 px-3 bg-slate-700 hover:bg-slate-800 text-white font-medium rounded-xl text-xs transition"
             >
-              3. Simular Timeout (Protocol Only)
+              4. Simular Timeout (Protocol Only)
             </button>
           </div>
         </div>
