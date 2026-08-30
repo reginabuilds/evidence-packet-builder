@@ -2,15 +2,19 @@
 
 import React, { useState } from 'react';
 import NewVerificationForm from '@/components/NewVerificationForm';
+import VerificationProgress from '@/components/VerificationProgress';
+import VerifiedResult from '@/components/VerifiedResult';
+import { INITIAL_TRUSTED_CONTACTS } from '@/lib/types';
 
 export default function HomeShell() {
   const [view, setView] = useState<
-    'home' | 'new_verification' | 'created_summary'
+    'home' | 'new_verification' | 'in_progress' | 'verified' | 'protocol_only'
   >('home');
 
-  const [createdSession, setCreatedSession] = useState<{
+  const [session, setSession] = useState<{
     requester: string;
     contactId: string;
+    contactName: string;
   } | null>(null);
 
   const handleStartVerification = () => {
@@ -21,12 +25,17 @@ export default function HomeShell() {
     requesterLabel: string,
     trustedContactId: string
   ) => {
-    setCreatedSession({
+    const contact = INITIAL_TRUSTED_CONTACTS.find(
+      (c) => c.id === trustedContactId
+    );
+
+    setSession({
       requester: requesterLabel,
       contactId: trustedContactId,
+      contactName: contact ? contact.name : 'Contacto de confianza',
     });
 
-    setView('created_summary');
+    setView('in_progress');
   };
 
   return (
@@ -112,30 +121,55 @@ export default function HomeShell() {
         />
       )}
 
-      {view === 'created_summary' && createdSession && (
+      {view === 'in_progress' && session && (
+        <VerificationProgress
+          requesterLabel={session.requester}
+          contactName={session.contactName}
+          onConfirm={() => setView('verified')}
+          onCannotConfirm={() => setView('protocol_only')}
+          onTimeout={() => setView('protocol_only')}
+        />
+      )}
+
+      {view === 'verified' && session && (
+        <VerifiedResult
+          requesterLabel={session.requester}
+          contactName={session.contactName}
+          onReset={() => {
+            setSession(null);
+            setView('home');
+          }}
+        />
+      )}
+
+      {view === 'protocol_only' && (
         <div className="w-full max-w-md bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mt-2 sm:mt-6 p-6 space-y-4">
-          <div className="bg-blue-50 border border-blue-200 text-blue-900 p-4 rounded-xl">
-            <span className="inline-block text-xs font-bold uppercase tracking-wider bg-blue-200 text-blue-800 px-2 py-0.5 rounded mb-2">
-              Estado: Pendiente
+          <div className="bg-amber-600 text-white p-4 rounded-xl">
+            <span className="inline-block text-xs font-bold uppercase tracking-wider bg-amber-800 text-amber-100 px-2 py-0.5 rounded mb-1">
+              PROTOCOLO ONLY
             </span>
 
             <h3 className="font-bold text-base">
-              Sesión de verificación creada
+              No se pudo verificar independientemente
             </h3>
+          </div>
 
-            <p className="text-xs text-blue-700 mt-1">
-              Solicitante declarado:{' '}
-              <strong>{createdSession.requester}</strong>
+          <div className="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-xl">
+            <p className="text-xs font-bold text-amber-900 mb-1">
+              No envíes el dinero todavía.
+            </p>
+
+            <p className="text-xs text-amber-800 leading-relaxed">
+              Family Shield no pudo establecer una verificación independiente
+              con tu contacto de confianza.
             </p>
           </div>
 
-          <p className="text-xs text-slate-600 leading-relaxed">
-            La solicitud de verificación independiente se canalizará a través
-            del contacto seleccionado.
-          </p>
-
           <button
-            onClick={() => setView('home')}
+            onClick={() => {
+              setSession(null);
+              setView('home');
+            }}
             className="w-full py-3 px-4 bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium rounded-xl transition text-xs text-center"
           >
             Volver al inicio
