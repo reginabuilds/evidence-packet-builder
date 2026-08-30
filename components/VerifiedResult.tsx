@@ -21,28 +21,31 @@ export default function VerifiedResult({
         </div>
 
         <h2 className="text-xl font-bold">
-          Verificado independientemente
+          Contacto de confianza confirmado
         </h2>
       </div>
 
       <div className="p-6 space-y-5">
-        <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-xl text-xs text-emerald-950">
+        <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-xl text-xs text-emerald-950 space-y-1">
           <p>
-            Tu contacto de confianza (<strong>{contactName}</strong>) ha
-            confirmado la situación de forma independiente respecto a{' '}
+            Tu contacto de confianza (<strong>{contactName}</strong>) confirmó
+            que conoce la situación relacionada con{' '}
             <strong>{requesterLabel}</strong>.
           </p>
         </div>
 
         <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
           <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
-            Control del usuario
+            Lo que Family Shield sabe
           </h3>
 
           <p className="text-xs text-slate-700 leading-relaxed">
-            Family Shield ha completado la verificación independiente. La
-            decisión final sobre qué hacer a continuación permanece al 100%
-            bajo tu control.
+            Family Shield no puede determinar si la emergencia es real ni si
+            debes enviar dinero.
+          </p>
+
+          <p className="text-xs font-bold text-slate-900 leading-relaxed">
+            Tu decisión sigue siendo tuya.
           </p>
         </div>
 
