@@ -1,11 +1,14 @@
-import Header from '@/components/Header';
-import HomeShell from '@/components/HomeShell';
+import { redirect } from "next/navigation";
+import StudentWorkspace from "@/components/StudentWorkspace";
+import { createSupabaseAdminClient } from "@/lib/supabase/server";
 
-export default function Home() {
-  return (
-    <div className="min-h-screen bg-slate-50 font-sans">
-      <Header />
-      <HomeShell />
-    </div>
-  );
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const supabase = createSupabaseAdminClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) redirect("/login");
+
+  return <StudentWorkspace />;
 }
