@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { AiAnalysisPanel } from "@/components/AiAnalysisPanel";
 import { ContextSubmissionForm } from "@/components/ContextSubmissionForm";
 import { EvidenceIntakeForm } from "@/components/EvidenceIntakeForm";
 import { createBrowserSupabaseClient } from "@/lib/supabase/browser";
@@ -90,13 +91,14 @@ export default function StudentWorkspace() {
         </section>
 
         <section className="mt-8"><ContextSubmissionForm /></section>
+        <section className="mt-8"><AiAnalysisPanel /></section>
 
         <section className="mt-8 rounded-2xl border border-[#dfe4dc] bg-white p-6 shadow-sm sm:p-7">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="m-0 text-xs font-bold uppercase tracking-[0.12em] text-[#657065]">Your control</p>
               <h2 className="mt-2 text-xl font-bold">You own what enters your Evidence Record.</h2>
-              <p className="mt-2 max-w-2xl text-sm leading-6 text-[#59635b]">Your original upload is preserved as private evidence. Your context is student-provided and can be updated before later review and sharing steps.</p>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-[#59635b]">Your original upload is preserved as private evidence. Your context is student-provided, and AI analysis remains a separate proposal until a later review and approval stage.</p>
             </div>
             <div className="shrink-0 rounded-xl bg-[#f2f5f0] px-4 py-3 text-center text-xs font-semibold text-[#4b554c]">Student-owned</div>
           </div>
