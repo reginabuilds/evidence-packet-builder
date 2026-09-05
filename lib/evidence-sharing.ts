@@ -29,8 +29,8 @@ export function publicApprovedRecord(record: unknown) {
 
   return {
     recordVersion: parsed.recordVersion,
-    status: "approved",
-    approvalStatus: "approved_by_student",
+    status: "approved" as const,
+    approvalStatus: "approved_by_student" as const,
     studentApprovedInformation: parsed.studentApprovedInformation,
     studentProvided: parsed.studentProvided,
     aiGeneratedProposal: parsed.aiGeneratedProposal,
