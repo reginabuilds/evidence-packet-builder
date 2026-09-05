@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { EvidenceIntakeForm } from "@/components/EvidenceIntakeForm";
 import { createBrowserSupabaseClient } from "@/lib/supabase/browser";
 
 const STATUS = {
-  artifact: "Not started",
   record: "Not started",
   review: "Not started",
   sharing: "Not shared",
@@ -88,26 +88,9 @@ export default function StudentWorkspace() {
         </section>
 
         <section className="mt-8 grid gap-4 lg:grid-cols-[1.35fr_1fr]">
-          <article className="rounded-2xl border border-[#cfe0d1] bg-white p-6 shadow-sm sm:p-7">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <p className="m-0 text-xs font-bold uppercase tracking-[0.12em] text-[#657065]">Start here</p>
-                <h2 className="mt-2 text-xl font-bold">Submit your real artifact</h2>
-              </div>
-              <span className="rounded-full bg-[#eef4ed] px-3 py-1 text-xs font-bold text-[#1f5a3a]">{STATUS.artifact}</span>
-            </div>
-            <p className="mt-3 text-sm leading-6 text-[#59635b]">
-              Your artifact will be the source for the evidence you choose to keep in your record.
-            </p>
-            <button
-              type="button"
-              disabled
-              className="mt-6 w-full cursor-not-allowed rounded-xl bg-[#dfe6dd] px-4 py-3 text-sm font-bold text-[#6a746b] sm:w-auto sm:min-w-48"
-            >
-              Artifact submission — next stage
-            </button>
-            <p className="mt-3 text-xs text-[#7a827b]">The upload flow is intentionally reserved for Feature 04.</p>
-          </article>
+          <div>
+            <EvidenceIntakeForm />
+          </div>
 
           <article className="rounded-2xl border border-[#dfe4dc] bg-white p-6 shadow-sm sm:p-7">
             <p className="m-0 text-xs font-bold uppercase tracking-[0.12em] text-[#657065]">Evidence Record</p>
@@ -126,7 +109,7 @@ export default function StudentWorkspace() {
               <p className="m-0 text-xs font-bold uppercase tracking-[0.12em] text-[#657065]">Your control</p>
               <h2 className="mt-2 text-xl font-bold">You own what enters your Evidence Record.</h2>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-[#59635b]">
-                AI-generated evidence will remain a proposal until you review it. Sharing is optional and controlled by you.
+                Your original upload is preserved as private evidence. Later review and sharing steps remain separate from this submission stage.
               </p>
             </div>
             <div className="shrink-0 rounded-xl bg-[#f2f5f0] px-4 py-3 text-center text-xs font-semibold text-[#4b554c]">
