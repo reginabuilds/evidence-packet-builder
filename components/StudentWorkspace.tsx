@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { ContextSubmissionForm } from "@/components/ContextSubmissionForm";
 import { EvidenceIntakeForm } from "@/components/EvidenceIntakeForm";
 import { createBrowserSupabaseClient } from "@/lib/supabase/browser";
 
@@ -16,9 +17,7 @@ export default function StudentWorkspace() {
 
   useEffect(() => {
     const supabase = createBrowserSupabaseClient();
-
     let active = true;
-
     supabase.auth.getSession().then(({ data }) => {
       if (!active) return;
       if (!data.session?.user) {
@@ -28,7 +27,6 @@ export default function StudentWorkspace() {
       setEmail(data.session.user.email ?? null);
       setLoading(false);
     });
-
     const { data: subscription } = supabase.auth.onAuthStateChange((_event, session) => {
       if (!session?.user) {
         window.location.replace("/login");
@@ -36,7 +34,6 @@ export default function StudentWorkspace() {
       }
       setEmail(session.user.email ?? null);
     });
-
     return () => {
       active = false;
       subscription.subscription.unsubscribe();
@@ -67,13 +64,7 @@ export default function StudentWorkspace() {
           </div>
           <div className="flex items-center gap-4">
             <span className="hidden text-sm text-[#657065] sm:inline">{email}</span>
-            <button
-              type="button"
-              onClick={signOut}
-              className="rounded-lg border border-[#cfd7ce] bg-white px-3 py-2 text-sm font-semibold text-[#263029] hover:bg-[#f2f5f0]"
-            >
-              Sign out
-            </button>
+            <button type="button" onClick={signOut} className="rounded-lg border border-[#cfd7ce] bg-white px-3 py-2 text-sm font-semibold text-[#263029] hover:bg-[#f2f5f0]">Sign out</button>
           </div>
         </div>
       </header>
@@ -82,16 +73,11 @@ export default function StudentWorkspace() {
         <section className="max-w-3xl">
           <p className="mb-2 text-sm font-semibold text-[#1f5a3a]">Your evidence</p>
           <h1 className="m-0 text-3xl font-bold tracking-tight sm:text-4xl">Build one clear record of real work.</h1>
-          <p className="mt-4 max-w-2xl text-base leading-7 text-[#59635b]">
-            EVIDENCE helps you organize one piece of real work into an Evidence Record that you control.
-          </p>
+          <p className="mt-4 max-w-2xl text-base leading-7 text-[#59635b]">EVIDENCE helps you organize one piece of real work into an Evidence Record that you control.</p>
         </section>
 
         <section className="mt-8 grid gap-4 lg:grid-cols-[1.35fr_1fr]">
-          <div>
-            <EvidenceIntakeForm />
-          </div>
-
+          <div><EvidenceIntakeForm /></div>
           <article className="rounded-2xl border border-[#dfe4dc] bg-white p-6 shadow-sm sm:p-7">
             <p className="m-0 text-xs font-bold uppercase tracking-[0.12em] text-[#657065]">Evidence Record</p>
             <h2 className="mt-2 text-xl font-bold">Current status</h2>
@@ -103,18 +89,16 @@ export default function StudentWorkspace() {
           </article>
         </section>
 
+        <section className="mt-8"><ContextSubmissionForm /></section>
+
         <section className="mt-8 rounded-2xl border border-[#dfe4dc] bg-white p-6 shadow-sm sm:p-7">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="m-0 text-xs font-bold uppercase tracking-[0.12em] text-[#657065]">Your control</p>
               <h2 className="mt-2 text-xl font-bold">You own what enters your Evidence Record.</h2>
-              <p className="mt-2 max-w-2xl text-sm leading-6 text-[#59635b]">
-                Your original upload is preserved as private evidence. Later review and sharing steps remain separate from this submission stage.
-              </p>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-[#59635b]">Your original upload is preserved as private evidence. Your context is student-provided and can be updated before later review and sharing steps.</p>
             </div>
-            <div className="shrink-0 rounded-xl bg-[#f2f5f0] px-4 py-3 text-center text-xs font-semibold text-[#4b554c]">
-              Student-owned
-            </div>
+            <div className="shrink-0 rounded-xl bg-[#f2f5f0] px-4 py-3 text-center text-xs font-semibold text-[#4b554c]">Student-owned</div>
           </div>
         </section>
       </div>
