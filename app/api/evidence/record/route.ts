@@ -133,6 +133,33 @@ export async function POST(request: Request) {
     });
     if (auditError) throw new Error("Evidence Record audit event could not be recorded.");
 
+    const { data: activeShares, error: shareLookupError } = await admin
+      .from("evidence_record_shares")
+      .select("id, evidence_record_id")
+      .eq("owner_id", user.id)
+      .is("revoked_at", null);
+    if (shareLookupError) throw new Error("Unable to resolve active sharing state.");
+
+    if (activeShares.length > 0) {
+      const revokedAt = new Date().toISOString();
+      const { error: revokeError } = await admin
+        .from("evidence_record_shares")
+        .update({ revoked_at: revokedAt })
+        .eq("owner_id", user.id)
+        .is("revoked_at", null);
+      if (revokeError) throw new Error("Previous sharing could not be revoked.");
+
+      const { error: sharingAuditError } = await admin.from("transformation_events").insert({
+        evidence_id: activeShares[0].evidence_record_id,
+        event_type: "sharing_revoked",
+        actor_id: user.id,
+        actor_role: "applicant",
+        new_value_json: { sharing: "revoked", revoked_at: revokedAt, reason: "new_evidence_record_generated" },
+        reason: "Previous student-controlled share was automatically revoked because a new Evidence Record was generated.",
+      });
+      if (sharingAuditError) throw new Error("Sharing revocation audit event could not be recorded.");
+    }
+
     return NextResponse.json({ record: saved });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unable to generate the Evidence Record.";
