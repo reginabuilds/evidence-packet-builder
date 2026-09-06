@@ -22,35 +22,53 @@ export function ContextSubmissionForm() {
   const [loading, setLoading] = useState(true);
   const [pending, setPending] = useState(false);
 
-  useEffect(() => {
-    fetch("/api/evidence/context")
-      .then(async (response) => {
-        const body = await response.json();
-        if (!response.ok) throw new Error(body.error ?? "Unable to load context.");
-        if (body.context) {
-          const value = body.context as ContextValue;
-          setContext(value);
-          setEvidenceId(value.evidence_id);
-          setPurpose(value.purpose);
-          setRole(value.role);
-          setActions(value.actions);
-          setOutcome(value.outcome);
-          return;
-        }
+  async function loadEvidence() {
+    try {
+      const contextResponse = await fetch("/api/evidence/context");
+      const body = await contextResponse.json();
+      if (!contextResponse.ok) throw new Error(body.error ?? "Unable to load context.");
+      if (body.context) {
+        const value = body.context as ContextValue;
+        setContext(value);
+        setEvidenceId(value.evidence_id);
+        setPurpose(value.purpose);
+        setRole(value.role);
+        setActions(value.actions);
+        setOutcome(value.outcome);
+        return true;
+      }
 
-        const supabase = createBrowserSupabaseClient();
-        const { data, error } = await supabase
-          .from("evidence_items")
-          .select("id")
-          .order("uploaded_at", { ascending: false })
-          .limit(1)
-          .maybeSingle();
-        if (error) throw new Error("Unable to find your submitted artifact.");
-        setEvidenceId(data?.id ?? null);
-      })
-      .catch((error) => setMessage(error instanceof Error ? error.message : "Unable to load context."))
-      .finally(() => setLoading(false));
-  }, []);
+      const supabase = createBrowserSupabaseClient();
+      const { data, error } = await supabase
+        .from("evidence_items")
+        .select("id")
+        .order("uploaded_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      if (error) throw new Error("Unable to find your submitted artifact.");
+      setEvidenceId(data?.id ?? null);
+      return Boolean(data?.id);
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "Unable to load context.");
+      return false;
+    }
+  }
+
+  useEffect(() => {
+    void loadEvidence().finally(() => setLoading(false));
+
+    const refresh = () => void loadEvidence();
+    window.addEventListener("evidence-submitted", refresh);
+
+    const retry = window.setInterval(() => {
+      if (!evidenceId) void loadEvidence();
+    }, 1500);
+
+    return () => {
+      window.removeEventListener("evidence-submitted", refresh);
+      window.clearInterval(retry);
+    };
+  }, [evidenceId]);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
