@@ -5,7 +5,12 @@ import { createBrowserSupabaseClient } from "@/lib/supabase/browser";
 
 type AnalysisPayload = {
   workSummary: string;
-  proposedCapabilities: Array<{ capability: string; evidenceBasis: string }>;
+  proposedCapabilities: Array<{
+    capability: string;
+    supportingEvidence?: Array<{ description: string; reference: string }>;
+    explanation?: string;
+    evidenceBasis: string;
+  }>;
   supportingObservations: string[];
   limitations: string[];
   disclaimer: string;
@@ -64,7 +69,7 @@ export function AiAnalysisPanel() {
       const body = await response.json();
       if (!response.ok) throw new Error(body.error ?? "Unable to run AI analysis.");
       setAnalysis(body.analysis);
-      setMessage("AI analysis proposal created. Review it as a proposal, not verified fact.");
+      setMessage("AI analysis proposal created. Student review is required before any later approval step.");
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Unable to run AI analysis.");
     } finally {
@@ -90,8 +95,9 @@ export function AiAnalysisPanel() {
       {analysis && (
         <div className="mt-6 space-y-6 border-t border-[#edf0eb] pt-6">
           <div className="rounded-xl bg-[#fff8e8] p-4">
-            <p className="m-0 text-xs font-bold uppercase tracking-[0.1em] text-[#765000]">{analysis.source_mode === "simulated" ? "Simulated AI analysis" : "AI-generated analysis"}</p>
+            <p className="m-0 text-xs font-bold uppercase tracking-[0.1em] text-[#765000]">{analysis.source_mode === "simulated" ? "SIMULATED AI" : "AI-generated analysis"}</p>
             <p className="mt-2 text-sm leading-6 text-[#624c18]">{analysis.analysis_json.disclaimer}</p>
+            <p className="mt-2 text-sm leading-6 text-[#624c18]">This output is an AI proposal and requires student review. Feature 06 does not approve or certify it.</p>
           </div>
 
           <section>
@@ -101,11 +107,24 @@ export function AiAnalysisPanel() {
 
           <section>
             <h3 className="text-sm font-bold uppercase tracking-[0.08em] text-[#657065]">Proposed evidence-backed capabilities</h3>
-            <div className="mt-3 space-y-3">
+            <div className="mt-3 space-y-4">
               {analysis.analysis_json.proposedCapabilities.map((item, index) => (
                 <div key={`${item.capability}-${index}`} className="rounded-xl border border-[#e5e9e2] p-4">
-                  <p className="font-semibold">{item.capability}</p>
-                  <p className="mt-1 text-sm leading-6 text-[#59635b]">{item.evidenceBasis}</p>
+                  <p className="text-xs font-bold uppercase tracking-[0.08em] text-[#657065]">Evidence-backed capability</p>
+                  <p className="mt-1 font-semibold">{item.capability}</p>
+
+                  <p className="mt-4 text-xs font-bold uppercase tracking-[0.08em] text-[#657065]">Supporting evidence</p>
+                  <ul className="mt-2 space-y-2 text-sm leading-6 text-[#59635b]">
+                    {(item.supportingEvidence ?? [{ description: item.evidenceBasis, reference: "Previously generated proposal" }]).map((evidence, evidenceIndex) => (
+                      <li key={`${evidence.reference}-${evidenceIndex}`} className="rounded-lg bg-[#f7f9f5] px-3 py-2">
+                        <span>{evidence.description}</span>
+                        <span className="mt-1 block text-xs text-[#7a817a]">Reference: {evidence.reference}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <p className="mt-4 text-xs font-bold uppercase tracking-[0.08em] text-[#657065]">Why the evidence supports it</p>
+                  <p className="mt-1 text-sm leading-6 text-[#59635b]">{item.explanation ?? item.evidenceBasis}</p>
                 </div>
               ))}
             </div>
@@ -121,7 +140,7 @@ export function AiAnalysisPanel() {
             <ul className="mt-2 list-disc space-y-2 pl-5 text-sm leading-6 text-[#59635b]">{analysis.analysis_json.limitations.map((item) => <li key={item}>{item}</li>)}</ul>
           </section>
 
-          <p className="text-xs leading-5 text-[#7a817a]">Generator: {analysis.generator_name}{analysis.generator_model ? ` · ${analysis.generator_model}` : ""}. This output has not been approved into an Evidence Record.</p>
+          <p className="text-xs leading-5 text-[#7a817a]">Generator: {analysis.generator_name}{analysis.generator_model ? ` · ${analysis.generator_model}` : ""}. This output remains an AI proposal requiring student review.</p>
         </div>
       )}
     </article>

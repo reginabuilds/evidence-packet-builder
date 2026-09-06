@@ -31,5 +31,14 @@ using (
   )
 );
 
+-- Feature 06 records its own proposal audit event and must not depend on a later
+-- feature migration to make that event type valid.
+alter table public.transformation_events
+  drop constraint if exists transformation_events_event_type_check;
+
+alter table public.transformation_events
+  add constraint transformation_events_event_type_check
+  check (event_type in ('created', 'extracted', 'ai_analysis_proposed', 'corrected', 'verification_changed', 'review_resolved', 'excluded', 'included'));
+
 comment on table public.evidence_ai_analyses is
   'Feature 06 AI-generated or simulated proposals. Rows are not verified facts, certifications, scores, rankings, or approved Evidence Records.';
