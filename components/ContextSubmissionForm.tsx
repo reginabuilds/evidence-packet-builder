@@ -24,7 +24,15 @@ export function ContextSubmissionForm() {
 
   async function loadEvidence() {
     try {
-      const contextResponse = await fetch("/api/evidence/context", { cache: "no-store" });
+      const supabase = createBrowserSupabaseClient();
+      const { data: sessionData } = await supabase.auth.getSession();
+      const accessToken = sessionData.session?.access_token;
+      if (!accessToken) throw new Error("Sign in with a fictional demo account first.");
+
+      const contextResponse = await fetch("/api/evidence/context", {
+        cache: "no-store",
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
       const body = await contextResponse.json();
       if (!contextResponse.ok) throw new Error(body.error ?? "Unable to load context.");
       if (body.context) {
