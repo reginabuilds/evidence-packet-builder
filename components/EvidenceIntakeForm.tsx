@@ -32,7 +32,8 @@ export function EvidenceIntakeForm() {
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const form = new FormData(event.currentTarget);
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
     if (!file) return setMessage("Choose an invented PDF, JPG, PNG, or TXT file.");
     if (file.size > MAX_EVIDENCE_FILE_SIZE || !(file.type in ALLOWED_FILE_TYPES)) return setMessage("Only PDF, JPG, PNG, and TXT files up to 10 MB are accepted.");
     if (form.get("demoOnlyConfirmed") !== "on") return setMessage("Confirm that this is invented demo evidence before uploading.");
@@ -67,7 +68,7 @@ export function EvidenceIntakeForm() {
       const finalized = await finalizeResponse.json();
       if (!finalizeResponse.ok) throw new Error(finalized.error ?? "Unable to save evidence.");
 
-      event.currentTarget.reset();
+      formElement.reset();
       setFile(undefined);
       setMessage(`Saved “${finalized.evidence.title}” as unverified demo evidence.`);
     } catch (error) {
