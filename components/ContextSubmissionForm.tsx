@@ -24,7 +24,7 @@ export function ContextSubmissionForm() {
 
   async function loadEvidence() {
     try {
-      const contextResponse = await fetch("/api/evidence/context");
+      const contextResponse = await fetch("/api/evidence/context", { cache: "no-store" });
       const body = await contextResponse.json();
       if (!contextResponse.ok) throw new Error(body.error ?? "Unable to load context.");
       if (body.context) {
@@ -38,16 +38,8 @@ export function ContextSubmissionForm() {
         return true;
       }
 
-      const supabase = createBrowserSupabaseClient();
-      const { data, error } = await supabase
-        .from("evidence_items")
-        .select("id")
-        .order("uploaded_at", { ascending: false })
-        .limit(1)
-        .maybeSingle();
-      if (error) throw new Error("Unable to find your submitted artifact.");
-      setEvidenceId(data?.id ?? null);
-      return Boolean(data?.id);
+      setEvidenceId(body.evidenceId ?? null);
+      return Boolean(body.evidenceId);
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Unable to load context.");
       return false;
