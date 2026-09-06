@@ -70,6 +70,7 @@ export function EvidenceIntakeForm() {
 
       setFile(undefined);
       setMessage(`Saved “${finalized.evidence.title}” as unverified demo evidence.`);
+      window.dispatchEvent(new Event("evidence-submitted"));
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Unable to upload evidence.");
     } finally {
