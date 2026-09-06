@@ -68,7 +68,6 @@ export function EvidenceIntakeForm() {
       const finalized = await finalizeResponse.json();
       if (!finalizeResponse.ok) throw new Error(finalized.error ?? "Unable to save evidence.");
 
-      formElement.reset();
       setFile(undefined);
       setMessage(`Saved “${finalized.evidence.title}” as unverified demo evidence.`);
     } catch (error) {
