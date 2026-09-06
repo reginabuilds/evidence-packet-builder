@@ -24,7 +24,19 @@ export async function GET(request: Request) {
     .maybeSingle();
 
   if (error) return NextResponse.json({ error: "Unable to load context." }, { status: 500 });
-  return NextResponse.json({ context: data ?? null });
+
+  if (data) return NextResponse.json({ context: data, evidenceId: data.evidence_id });
+
+  const { data: evidence, error: evidenceError } = await auth.supabase
+    .from("evidence_items")
+    .select("id")
+    .eq("owner_id", auth.user.id)
+    .order("uploaded_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (evidenceError) return NextResponse.json({ error: "Unable to find your submitted artifact." }, { status: 500 });
+  return NextResponse.json({ context: null, evidenceId: evidence?.id ?? null });
 }
 
 export async function POST(request: Request) {
