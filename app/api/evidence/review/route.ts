@@ -65,7 +65,7 @@ export async function POST(request: Request) {
       if (error) throw new Error("Student decision could not be saved.");
       saved = data;
     } else {
-      const { data, error } = await admin.from("evidence_ai_proposal_reviews").insert({ analysis_id: analysis.id, evidence_id: evidence.id, proposal_index: proposalIndex, proposal_id: id, ...payload }).select("id, analysis_id, evidence_id, proposal_index, proposal_id, student_id, decision, edited_capability, edited_explanation, decided_at").single();
+      const { data, error } = await admin.from("evidence_ai_proposal_reviews").insert({ analysis_id: analysis.id, proposal_index: proposalIndex, ...payload }).select("id, analysis_id, evidence_id, proposal_index, proposal_id, student_id, decision, edited_capability, edited_explanation, decided_at").single();
       if (error) throw new Error(error.code === "23505" ? "This proposal already has a student decision." : "Student decision could not be saved.");
       saved = data;
     }
