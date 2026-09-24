@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900">
+  <rect width="1400" height="900" fill="#f6f6f1"/>
+  <rect x="40" y="35" width="1320" height="80" rx="18" fill="#ffffff" stroke="#dfe4dc"/>
+  <text x="75" y="70" font-family="Arial" font-size="14" font-weight="700" fill="#1f5a3a">SEMOVI · OPERATIONAL CHANGE REVIEW</text>
+  <text x="75" y="95" font-family="Arial" font-size="24" font-weight="700" fill="#172018">Route MX-07 · representation evidence</text>
+  <rect x="1090" y="57" width="220" height="38" rx="19" fill="#eaf4ec"/>
+  <text x="1120" y="82" font-family="Arial" font-size="14" font-weight="700" fill="#1f5a3a">SIMULATED DATA</text>
+  <rect x="40" y="140" width="850" height="500" rx="20" fill="#ffffff" stroke="#dfe4dc"/>
+  <text x="70" y="180" font-family="Arial" font-size="13" font-weight="700" fill="#657065">GEOSPATIAL COMPARISON</text>
+  <text x="70" y="207" font-family="Arial" font-size="18" font-weight="700" fill="#172018">Official representation vs. observed trips</text>
+  <rect x="70" y="230" width="790" height="370" rx="14" fill="#eef1ec"/>
+  <path d="M130 540 C250 500 230 390 340 360 S500 300 590 350 S720 500 815 275" fill="none" stroke="#1f5a3a" stroke-width="10"/>
+  <path d="M130 540 C245 510 255 420 355 390 S505 335 610 405 S735 510 815 275" fill="none" stroke="#9a5a00" stroke-width="7" stroke-dasharray="12 10"/>
+  <circle cx="130" cy="540" r="10" fill="#1f5a3a"/><circle cx="815" cy="275" r="10" fill="#9a5a00"/>
+  <text x="100" y="585" font-family="Arial" font-size="13" fill="#657065">Official path</text>
+  <line x1="180" y1="581" x2="250" y2="581" stroke="#1f5a3a" stroke-width="8"/>
+  <text x="300" y="585" font-family="Arial" font-size="13" fill="#657065">Observed path cluster</text>
+  <line x1="430" y1="581" x2="500" y2="581" stroke="#9a5a00" stroke-width="6" stroke-dasharray="12 10"/>
+  <rect x="920" y="140" width="440" height="235" rx="20" fill="#ffffff" stroke="#dfe4dc"/>
+  <text x="950" y="180" font-family="Arial" font-size="13" font-weight="700" fill="#657065">COVERAGE</text>
+  <text x="950" y="225" font-family="Arial" font-size="38" font-weight="700" fill="#1f5a3a">86%</text>
+  <text x="950" y="252" font-family="Arial" font-size="14" fill="#59635b">Sufficient for this demo window</text>
+  <rect x="950" y="280" width="370" height="14" rx="7" fill="#e4e9e3"/><rect x="950" y="280" width="318" height="14" rx="7" fill="#1f5a3a"/>
+  <text x="950" y="330" font-family="Arial" font-size="12" fill="#657065">212 simulated trips · 7-day window</text>
+  <rect x="920" y="395" width="440" height="245" rx="20" fill="#ffffff" stroke="#dfe4dc"/>
+  <text x="950" y="435" font-family="Arial" font-size="13" font-weight="700" fill="#657065">MODEL SIGNAL</text>
+  <text x="950" y="475" font-family="Arial" font-size="22" font-weight="700" fill="#172018">Potential mismatch</text>
+  <text x="950" y="512" font-family="Arial" font-size="36" font-weight="700" fill="#9a5a00">0.82</text>
+  <text x="1040" y="510" font-family="Arial" font-size="13" fill="#59635b">review score</text>
+  <rect x="950" y="545" width="170" height="36" rx="18" fill="#fff3df"/><text x="978" y="569" font-family="Arial" font-size="13" font-weight="700" fill="#9a5a00">REVIEW RECOMMENDED</text>
+  <rect x="40" y="665" width="850" height="190" rx="20" fill="#ffffff" stroke="#dfe4dc"/>
+  <text x="70" y="705" font-family="Arial" font-size="13" font-weight="700" fill="#657065">EVIDENCE PACKAGE</text>
+  <text x="70" y="738" font-family="Arial" font-size="17" font-weight="700" fill="#172018">Observed trips diverge from the official path in a persistent corridor.</text>
+  <text x="70" y="768" font-family="Arial" font-size="13" fill="#59635b">Coverage: 86% · Persistence: 6/7 days · Mismatch: 0.82 · Source: simulated phone/GPS</text>
+  <text x="70" y="798" font-family="Arial" font-size="13" fill="#59635b">This is evidence for human review, not an official route change.</text>
+  <rect x="920" y="665" width="440" height="190" rx="20" fill="#1f5a3a"/>
+  <text x="950" y="705" font-family="Arial" font-size="13" font-weight="700" fill="#dcefe0">HUMAN REVIEW</text>
+  <text x="950" y="740" font-family="Arial" font-size="18" font-weight="700" fill="#ffffff">What should happen next?</text>
+  <rect x="950" y="765" width="165" height="45" rx="12" fill="#ffffff"/><text x="980" y="793" font-family="Arial" font-size="13" font-weight="700" fill="#1f5a3a">Keep representation</text>
+  <rect x="1130" y="765" width="200" height="45" rx="12" fill="#ffffff"/><text x="1150" y="793" font-family="Arial" font-size="13" font-weight="700" fill="#1f5a3a">Request validation</text>
+</svg>
