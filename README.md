@@ -1,70 +1,43 @@
-# Evidence Packet Builder
+# Week 07 — Operational Change Evidence
 
-A Week-2 MVP for organizing **invented/demo** economic evidence into a traceable Evidence Packet. It is designed for a Mexican applicant with informal or partially formal economic activity.
+A Business Bending Week 07 Technologist MVP for **The Holy Driver — When the Road Gets Safer and the Driver Disappears**.
 
-## Current scope: Commit 2
+## What this slice tests
 
-The app includes a runnable Next.js/Tailwind shell, fixed fictional demo accounts, Supabase database migrations, seed data, deny-by-default Row Level Security, private demo evidence intake, structured extraction, applicant correction/exclusion workflows, an assigned human-review queue, and immutable applicant-authorized Evidence Packets.
+CDMX already has official mobility representations. The unresolved experimental question is whether existing observations provide enough coverage to distinguish normal operational variability from a meaningful operational change that deserves human review.
 
-## Non-negotiable product limits
+The slice is deliberately not a new mapping platform. It demonstrates:
 
-- No credit score, creditworthiness ranking, approval probability, loan recommendation, or automated lending decision.
-- No explanation or inference about a lender's proprietary algorithm.
-- No real personal data. Use invented/demo evidence only.
-- No applicant onboarding until the evidence schema is approved and a lender commits to reviewing the 20 pilot cases.
-- Applicants control information release and will be able to correct or challenge evidence.
-- Association-based evidence is prohibited unless it can be inspected, challenged, and corrected by the applicant. This MVP will reject it entirely.
+**observed trips → coverage check → representation mismatch → evidence package → human review**
 
-## Security floor (implemented incrementally)
+## Live behavior
 
-- Keep credentials only in environment variables; `.env.example` contains names only.
-- Do not commit real personal data, secrets, or uploaded source files.
-- The schema has Row Level Security enabled on every application table, with no broad anonymous policies.
-- Demo authentication offers two fixed Supabase Auth accounts only; there is no registration, sign-up, or onboarding route.
-- The database stores only allowed, individual-inspectable evidence categories. It has no association, scoring, or decision fields.
-- Files are accepted only as PDF, JPG, PNG, or TXT up to 10 MB, and are uploaded through short-lived signed URLs to a non-public Supabase Storage bucket.
-- Intake endpoints apply a per-user request limit; production should replace this MVP's process-local limiter with a shared rate-limit store.
-- LLM services must never be allowed to set evidence verification status or make lending decisions.
-- The extraction prompt and server workflow limit LLM output to structured fields and confidence. Confidence is not verification, and only a human reviewer can verify evidence.
+- **Mismatch:** high coverage + persistent divergence → review signal.
+- **Stable:** high coverage + low divergence → no review signal.
+- **Low coverage:** insufficient observations → unknown, not stable.
+- Human review is explicit.
+- No automatic route updates, sanctions, driver identification, or personal data.
+- All telemetry and outcomes in the demo are simulated and labeled.
 
-## Run locally
+## Stack
 
-```bash
-npm install
-npm run dev
-```
+Next.js 15, React 19, Tailwind CSS 4, TypeScript, Vitest, Vercel, GitHub.
 
-Open `http://localhost:3000`.
+The geospatial layer is rendered as an SVG route comparison for the demo. The ML layer is a deterministic, explainable mismatch score so the experiment can be reproduced without claiming an opaque model is production-ready.
 
-## Demo Supabase setup
+## Evidence / packet
 
-1. Create a local Supabase project (`supabase start`) or a separate non-production Supabase project.
-2. Apply migrations in filename order, then run [`supabase/seed.sql`](./supabase/seed.sql).
-3. Copy `.env.example` to `.env.local` and set the public project URL, anon key, and server-only service-role key. Never expose the service-role key to client code or prefix it with `NEXT_PUBLIC_`.
-4. Visit `/login` and select either seeded fictional account. The shared local-only password is documented in `supabase/seed.sql`; do not reuse it outside a disposable demo project.
+- [`docs/PACKET.md`](./docs/PACKET.md) — Week 07 packet, benchmark, architecture, Mermaid flow, test plan and kill condition.
+- [`docs/mockup.svg`](./docs/mockup.svg) — analyst screen visual mockup.
+- [`PERSONA.md`](./PERSONA.md) — synthetic persona test log.
+- [`BUILDCHAT.md`](./BUILDCHAT.md) — structured build transcript and decisions.
+- [`DEMO.md`](./DEMO.md) — 3-minute + 30-second demo script.
+- [`tests/week7.test.ts`](./tests/week7.test.ts) — experiment checks.
 
-The demo identities and evidence are fabricated. Do not apply the seed file to a production environment.
+## External evidence used in the packet
 
-## Private demo intake
+The packet distinguishes facts, inferences and unproven hypotheses. External research used for the reasoning includes official CDMX GTFS and concessioned-route datasets, GTFS Schedule/Realtime guidance, and Mobileye REM as the global benchmark.
 
-After signing in, the Evidence page validates the title, allowlisted category, optional document date, file name/type, size, SHA-256 hash, and an explicit demo-only attestation. The server issues a short-lived signed upload URL scoped to one private object, then verifies metadata before saving the fictional evidence record, provenance record, and creation audit event. Association-derived categories are rejected and are never stored as evidence.
+## Kill condition
 
-## Structured extraction
-
-Use the fictional applicant account to run extraction on a seeded record or a private upload. Each run appends an `evidence_extractions` record and a transformation audit event that includes extraction version, fields, confidence, and uncertainty routing. Any missing or below-0.80 confidence field creates an open human-review item and sets evidence to `pending_review`; this is never verification.
-
-With no `LLM_API_KEY`, the app uses a deterministic mock extractor so the demo remains runnable. When configured, the LLM adapter sends private evidence only for structured extraction and validates the returned JSON before saving it. It is instructed and technically constrained not to verify, score, rank, recommend, predict approval, or make lending decisions.
-
-## Applicant corrections and exclusions
-
-Applicants may correct an extracted material field only after extraction exists, and must state a reason. The system preserves the original extracted value, writes an append-only correction record, creates a new structured-data version, logs the transformation, sets the item to `pending_review`, and opens a human-review item. Applicants cannot set any verification status, including `verified`. Applicants can also exclude irrelevant evidence from future packets with a required reason; exclusion preserves, rather than deletes, its audit history.
-
-## Human review
-
-Sign in as the fictional reviewer and open `/review`. The queue returns only items assigned to that reviewer and exposes the evidence source/provenance, structured extraction with confidence, corrections, and transformation history. A reviewer must supply a resolution note and can resolve only their assigned case as `verified`, `rejected`, or `needs_applicant_clarification`. The API verifies both the authenticated reviewer role and case assignment before it writes the review resolution, evidence status, and reviewer audit event. No LLM, upload process, or other automated workflow can write a verification outcome.
-
-## Evidence Packets and release control
-
-The fictional applicant selects only eligible, non-excluded, non-rejected evidence at `/packets` and must explicitly authorize the exact selection before generation. Generation rechecks ownership, case scope, applicant exclusions, human-review rejections, and the Association Firewall; the packet then stores a JSON snapshot containing provenance, verification status, corrections, review state, transformation history, authorization timestamp, selected evidence IDs, timestamp, version, required disclosure, and SHA-256 hash. Database triggers prevent packet snapshot updates or deletion.
-
-Authorization may be revoked with a required reason. Revocation preserves the immutable packet and authorization-event history, but blocks new generation and JSON-download actions. Packet download also writes an audit event. Packets never contain a credit score, recommendation, approval probability, or lending decision.
+> If SEMOVI already has sufficient information and its current workflow performs adequately, kill the data-coverage vacuum. Retain only workflow automation if it demonstrates measurable time or cost savings without reducing decision quality.
