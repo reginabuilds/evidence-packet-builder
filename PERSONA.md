@@ -1,117 +1,48 @@
-# EVIDENCE — Persona Test
+# PERSONA TEST — WEEK 07
 
-## Persona
+## Synthetic user
 
-**Doña Mari, 54**
+**Doña Mari, 54** — sells food outside a metro station, uses WhatsApp but distrusts apps, reads slowly, and gives up silently when confused.
 
-- Sells food outside the metro.
-- Uses WhatsApp.
-- Distrusts apps.
-- Reads slowly.
-- Tends to give up silently when confused.
+## Why this persona
 
-This is a synthetic persona based on the Week 4 Packet. No real personal data is used.
+The primary user for this MVP is an institutional mobility-data analyst, not Doña Mari. The course still requires a synthetic-user test, so this persona is used to stress-test whether the key distinction between **signal** and **official change** is understandable without technical language.
 
-## Test Goal
+## Test flow
 
-Walk through the product screen by screen and identify whether Doña Mari can understand what the product is doing, what she controls, and what will be shared.
+1. Open the dashboard.
+2. Identify what the green line and dashed line mean.
+3. Select the mismatch scenario.
+4. Run analysis.
+5. Read the coverage result.
+6. Decide whether the system has enough information to make a conclusion.
+7. Read the evidence package.
+8. Choose a human-review action.
 
-The product must remain an evidence organization and contestability layer. It must not become a credit score, ranking, approval probability, lending recommendation, hiring recommendation, or automated decision system.
+## Confusion log
 
-## Screen-by-Screen Test
+- “Representation mismatch” is technical language.
+- “Coverage” needs a short explanation.
+- “Simulated data” must be visible so demo values are not mistaken for live public data.
+- “Review recommended” must not be confused with “route officially changed.”
 
-### 1. Sign in / Student workspace
+## Worst confusion and fix
 
-**What she should understand:** This is her private workspace for organizing her evidence.
+The strongest risk is that a user interprets the orange observed path as an official route change. The MVP therefore repeats the boundary in the evidence and review panels:
 
-**Potential hesitation:** She may not know why she needs an account or what information is being stored.
+> **The signal is evidence for review, not an official route change.**
 
-**Observed risk:** Authentication and ownership language can feel technical.
+The coverage panel also states:
 
-**Pass condition:** She understands that the workspace belongs to her and that she controls the evidence workflow.
+> **Low coverage means unknown, not stable.**
 
-### 2. Evidence intake
+## Result
 
-**What she should understand:** She can submit an artifact as evidence.
+- The two path layers are distinguishable from the legend.
+- Low coverage is clearly presented as uncertainty rather than stability.
+- The analyst owns the final decision.
+- The product does not publish or sanction automatically.
 
-**Potential hesitation:** File type, technical upload language, or the demo-only nature of the artifact may be confusing.
+## Production follow-up
 
-**Pass condition:** She can identify the upload action and understand that the submitted artifact remains the source evidence.
-
-### 3. Student context
-
-**What she should understand:** She can explain the purpose, her role, what she did, and the outcome.
-
-**Potential hesitation:** Four text fields may feel like paperwork.
-
-**Pass condition:** She can describe the work in plain language and understands that her context is preserved with the artifact.
-
-### 4. AI analysis proposal
-
-**What she should understand:** AI is suggesting possible capabilities from the evidence; it is not proving or certifying them.
-
-**Potential hesitation:** The phrase “AI proposal” could be interpreted as a final judgment.
-
-**Pass condition:** She understands that the proposal requires her review.
-
-### 5. Student review
-
-**What she should understand:** She decides whether each AI proposal belongs in her final record.
-
-**Potential hesitation:** Accept / Reject / Edit can feel like a technical workflow.
-
-**Pass condition:** She can distinguish an AI suggestion from her own decision.
-
-### 6. Evidence Record review and approval
-
-**What she should understand:** The final record contains only capabilities she explicitly accepted and she must approve it herself.
-
-**Potential hesitation:** “Pending student approval” could be misunderstood as an employer or lender approval.
-
-**Pass condition:** She understands that approval is her approval of the Evidence Record, not a lending or hiring decision.
-
-### 7. Sharing control
-
-**What she should understand:** Sharing is off until she activates it. She can revoke access.
-
-**Potential hesitation:** A bearer link may be unfamiliar.
-
-**Pass condition:** She understands that activating sharing creates access for whoever has the link and that revoking it disables access.
-
-### 8. Public shared Evidence Record
-
-**What she should understand:** The recipient sees the approved Evidence Record, not her private workspace or original private account.
-
-**Potential hesitation:** A raw JSON/public record can look technical.
-
-**Pass condition:** She can understand that this is the record she chose to share.
-
-## Main Confusion Identified
-
-The highest-risk confusion is the difference between an **AI proposal** and the **student's own approval**. A slow-reading user who distrusts apps could otherwise interpret an AI-generated capability as a verified fact.
-
-## Fix Applied Before Final Demo
-
-The product was made explicit at the key transition points:
-
-- AI analysis is labeled **SIMULATED AI** when the deterministic demo path is used.
-- The analysis says it is a proposal and is not verified fact.
-- Feature 07 states that student review is required and that an AI proposal does not count as a student decision.
-- Feature 08 says the final record contains only capabilities explicitly accepted by the student.
-- The Evidence Record remains **Pending student approval** until the student explicitly approves it.
-- The final record preserves the AI-generated proposal for traceability instead of silently converting it into fact.
-- Sharing is allowed only after the student has approved the Evidence Record.
-
-## Final Persona Result
-
-**PASS — with the clarification fix above.**
-
-Doña Mari's critical question is answered by the product flow: **“¿Esto lo dijo la aplicación o lo acepté yo?”** The interface and record structure make the distinction explicit before anything can be approved or shared.
-
-## Evidence to Capture for Demo
-
-1. Feature 06 showing the AI proposal and proposal-only disclaimer.
-2. Feature 07 showing student decision states.
-3. Feature 08 showing the approved/pending approval distinction.
-4. Feature 09 showing sharing activation and revocation.
-5. Incognito shared-record test showing the approved record without signing in.
+Replace “representation mismatch” with plainer language such as “Observed operation differs from the official representation” if testing shows the technical phrase slows comprehension.
