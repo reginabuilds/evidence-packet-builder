@@ -1,43 +1,39 @@
-# Week 07 — Operational Change Evidence
+# Week 08 — ESCUDO PyME
 
-A Business Bending Week 07 Technologist MVP for **The Holy Driver — When the Road Gets Safer and the Driver Disappears**.
+A Business Bending Week 08 Technologist MVP for **When the Tools Outrun the Safeguards**.
 
 ## What this slice tests
 
-CDMX already has official mobility representations. The unresolved experimental question is whether existing observations provide enough coverage to distinguish normal operational variability from a meaningful operational change that deserves human review.
+Mexican SMEs already have many cybersecurity controls. The unresolved problem is operational: can a small business without an internal security team turn existing controls into prioritized actions and follow a clear human response path when an incident occurs?
 
-The slice is deliberately not a new mapping platform. It demonstrates:
+The slice is deliberately not an antivirus or password manager. It demonstrates:
 
-**observed trips → coverage check → representation mismatch → evidence package → human review**
+**prioritized controls → simulated AI explanation → human verification → incident mode → coordinator escalation**
 
 ## Live behavior
 
-- **Mismatch:** high coverage + persistent divergence → review signal.
-- **Stable:** high coverage + low divergence → no review signal.
-- **Low coverage:** insufficient observations → unknown, not stable.
-- Human review is explicit.
-- No automatic route updates, sanctions, driver identification, or personal data.
-- All telemetry and outcomes in the demo are simulated and labeled.
+- Spanish-first, phone-first demo.
+- Five synthetic security controls with priority and status.
+- Simulated AI recommendation, clearly labeled and non-authoritative.
+- Simulated incident-response flow with named next owner.
+- Coordinator view with severity, deadline, IT provider and capacity.
+- No attacker contact, ransom payment, automatic notification decision, safety certification, or irreversible AI action.
+- All demo data is synthetic and labeled.
 
 ## Stack
 
-Next.js 15, React 19, Tailwind CSS 4, TypeScript, Vitest, Vercel, GitHub.
+Next.js 15, React 19, Tailwind CSS 4, TypeScript, Vercel, GitHub.
 
-The geospatial layer is rendered as an SVG route comparison for the demo. The ML layer is a deterministic, explainable mismatch score so the experiment can be reproduced without claiming an opaque model is production-ready.
+The ESCUDO PyME interaction is implemented as a static HTML/CSS/JS demo embedded in the Next.js shell. The AI and security outputs are simulated so the prototype demonstrates workflow and safeguards without pretending to have production security intelligence.
 
 ## Evidence / packet
 
-- [`docs/PACKET.md`](./docs/PACKET.md) — Week 07 packet, benchmark, architecture, Mermaid flow, test plan and kill condition.
-- [`docs/mockup.svg`](./docs/mockup.svg) — analyst screen visual mockup.
+- [`docs/PACKET_WEEK8_ESCUDO_PYME.md`](./docs/PACKET_WEEK8_ESCUDO_PYME.md) — Week 8 packet, benchmark, Mermaid flow, swimlane, architecture, test plan and kill conditions.
+- [`docs/IMPLEMENTATION_PROMPT_WEEK8.md`](./docs/IMPLEMENTATION_PROMPT_WEEK8.md) — coding-agent build plan and acceptance criteria.
 - [`PERSONA.md`](./PERSONA.md) — synthetic persona test log.
-- [`BUILDCHAT.md`](./BUILDCHAT.md) — structured build transcript and decisions.
+- [`BUILDCHAT.md`](./BUILDCHAT.md) — structured Week 8 development log.
 - [`DEMO.md`](./DEMO.md) — 3-minute + 30-second demo script.
-- [`tests/week7.test.ts`](./tests/week7.test.ts) — experiment checks.
 
-## External evidence used in the packet
+## Security floor
 
-The packet distinguishes facts, inferences and unproven hypotheses. External research used for the reasoning includes official CDMX GTFS and concessioned-route datasets, GTFS Schedule/Realtime guidance, and Mobileye REM as the global benchmark.
-
-## Kill condition
-
-> If SEMOVI already has sufficient information and its current workflow performs adequately, kill the data-coverage vacuum. Retain only workflow automation if it demonstrates measurable time or cost savings without reducing decision quality.
+No secrets are committed. No real personal data is used. No persistent personal data is stored. AI is explicitly labeled as simulated and recommendations cannot perform irreversible actions.
