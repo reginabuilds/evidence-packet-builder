@@ -1,80 +1,51 @@
-# BUILDCHAT — BUSINESS BENDING WEEK 07
+# BUILDCHAT — BUSINESS BENDING WEEK 08
 
 ## Session purpose
 
-Build one working Technologist slice for **The Holy Driver — When the Road Gets Safer and the Driver Disappears**.
+Build one working Technologist slice for **When the Tools Outrun the Safeguards**: ESCUDO PyME.
 
-## 1. Initial hypothesis
+## 1. Team synthesis
 
-The starting idea was that drivers hold operational knowledge that technology does not capture.
+The team converged on a cybersecurity readiness and incident-response service for Mexican SMEs. The operator view emphasized a human coordinator and an operational response process. The money view reframed the offer as business continuity rather than another technology expense. The adversary view rejected another generic security product and pushed the concept toward what happens after something goes wrong. The Technologist role narrowed the technology contribution to connecting existing controls with a simple workflow.
 
-## 2. Adversarial narrowing
+## 2. Technology decision
 
-Evidence from existing mapping and mobility systems forced the claim to narrow. Mobileye REM demonstrates that large-scale systems can collect anonymous vehicle observations, aggregate and align drives, model road infrastructure, incorporate aggregate driving behavior, and perform change detection. GTFS already separates scheduled service from realtime changes and provides structures for trip updates, vehicle positions, alerts and route modifications.
+The MVP does not attempt to invent a new cybersecurity engine. MFA, backups, monitoring and other controls already exist. The prototype instead demonstrates a workflow layer that explains priorities, keeps recommendation separate from verification, and routes incidents to a named human owner.
 
-**Decision:** kill the broad “driver knowledge is not machine-readable” claim.
+**Decision:** use simulated security tooling and simulated AI outputs so the prototype can test workflow and safeguards without making unsupported security claims.
 
-## 3. Representation problem
+## 3. Exact user and partner
 
-The hypothesis moved to operational-state legibility and then to representation decay: when does the official representation stop explaining observed operation well enough to merit review?
+Primary user: owner/administrator of a small Mexican dental clinic without an internal cybersecurity team.
 
-**Decision:** use representation mismatch as the experimental signal, not “bad maps” as a blanket claim.
+Operational partner: the clinic's IT provider.
 
-## 4. Governance challenge
+Human coordinator: responsible for escalation and irreversible decisions.
 
-CDMX already publishes official mobility representations. SEMOVI maintains a dataset of routes and stops for concessioned transport, and the CDMX GTFS feed includes routes, trips, frequencies, shapes, stops and stop times.
+## 4. MVP implementation
 
-**Decision:** the MVP must not pretend that no institutional process exists.
+The home screen introduces ESCUDO PyME and the synthetic dental-clinic context. Mi Escudo presents five prioritized controls. A simulated AI recommendation explains what to do first. Incident mode walks the user through a five-step response. The coordinator screen makes ownership, severity, deadline, IT provider and capacity explicit.
 
-## 5. Final experiment hypothesis
+## 5. Safety / shadow clause
 
-The remaining question is whether available observations have sufficient coverage to distinguish normal operational variability from a meaningful operational change. If coverage is sufficient and the current institutional workflow already performs adequately, the data-coverage vacuum is killed.
+AI recommends; a human or deterministic check verifies. AI never pays ransom, contacts an attacker, decides whether affected people should be notified, certifies safety, or performs an irreversible action. No real personal data is used.
 
-## 6. Product decision
+## 6. Test evidence
 
-Build only a decision-support slice:
+Mechanical checks cover navigation, control status, incident progression, simulation labels and safety boundaries. The persona pass uses Doña Mari, a synthetic small-business owner who reads slowly and distrusts complex apps. The worst confusion is recommendation versus verification; the UI fixes this by making “IA simulada” and human verification explicit.
 
-**observed trips → coverage check → representation mismatch → evidence package → human review**
+## 7. Build evidence
 
-The system does not automatically publish, update, sanction, or identify drivers.
+The Week 8 implementation plan is recorded in `docs/IMPLEMENTATION_PROMPT_WEEK8.md` and the packet in `docs/PACKET_WEEK8_ESCUDO_PYME.md`. The application is implemented in the Next.js shell with the ESCUDO PyME static interaction under `public/escudo-pyme/`.
 
-## 7. Implementation
+## 8. What changed my mind this week
 
-The old Week-2 evidence shell was replaced at the home route with a Week-7 mobility review dashboard. The dashboard includes:
+I did not need to build a new cybersecurity engine. The stronger Technologist insight was that the missing layer may be operational: connecting existing controls, explanations and incident steps to the people who must act. The prototype therefore treats AI as a recommendation layer, not an authority.
 
-- simulated geospatial route comparison;
-- simulated phone/GPS telemetry label;
-- mismatch, stable and insufficient-coverage scenarios;
-- coverage confidence;
-- deterministic demo mismatch score;
-- evidence package;
-- human review action;
-- explicit kill condition.
+## 9. Kill condition
 
-## 8. Test-first evidence
-
-A Vitest suite checks that:
-
-1. insufficient coverage cannot be treated as stability;
-2. the mismatch demo crosses the review threshold;
-3. normal variability remains below the review threshold.
-
-## 9. Persona test
-
-The synthetic Doña Mari persona is used as a comprehension stress test. The highest-risk confusion is whether an observed path means an official route change. The interface explicitly says it is evidence for review only.
-
-## 10. Security / data boundary
-
-The demo uses invented data only. No secrets are added to the repository. No personal data is collected. Simulated telemetry is labeled on screen.
-
-## 11. What changed my mind this week
-
-I started by looking for a technology to capture what drivers know. The evidence repeatedly killed broader versions of that claim. The surviving question is smaller and falsifiable: **does existing observation coverage give an institution enough evidence to know when its representation no longer explains operation, and can a workflow layer improve that decision cheaply enough to matter?**
-
-## 12. Kill condition
-
-> **If SEMOVI already has sufficient information and its current workflow performs adequately, I will kill the data-vacuum hypothesis and retain only a workflow-automation hypothesis if it demonstrates measurable time or cost savings without reducing decision quality.**
+If users do not understand the human verification boundary, if the workflow adds confusion, or if it cannot demonstrate meaningful continuity/response benefit for an SME, kill or redesign the concept.
 
 ## Note on transcript fidelity
 
-This file is a structured development log of the actual decisions and implementation sequence, not a verbatim export of every chat message. The full conversational transcript should be exported from the ChatGPT project if the instructor explicitly requires a word-for-word transcript.
+This is a structured development log of the Week 8 implementation decisions. It is not a verbatim export of every chat message. If the instructor explicitly requires a word-for-word transcript, the ChatGPT conversation should be exported separately.
