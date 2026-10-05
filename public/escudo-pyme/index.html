@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ESCUDO PyME — preparación y respuesta</title>
+<meta name="description" content="Prototipo simulado de preparación y respuesta ante incidentes para una PyME mexicana." />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-mark">✦</span><div><strong>ESCUDO</strong><small>PyME</small></div></div>
+    <nav>
+      <button class="nav-item active" data-screen="home">⌂ <span>Inicio</span></button>
+      <button class="nav-item" data-screen="shield">◈ <span>Mi Escudo</span></button>
+      <button class="nav-item" data-screen="incident">⚠ <span>Incidentes</span></button>
+      <button class="nav-item" data-screen="coordinator">◎ <span>Coordinador</span></button>
+    </nav>
+    <div class="sidebar-foot">Datos de demo · inventados<br/>No almacena información real</div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar"><div><span class="eyebrow">WEEK 08 · SIMULACIÓN</span><h1 id="page-title">Tu Escudo PyME</h1></div><div class="status-pill">● Sistema de demostración</div></header>
+
+    <section id="home" class="screen active-screen">
+      <div class="hero-grid">
+        <div class="hero-card">
+          <span class="tag">CLÍNICA DENTAL · DEMO</span>
+          <h2>Convierte seguridad dispersa en acciones claras.</h2>
+          <p>ESCUDO PyME organiza controles existentes, pide evidencia y crea una ruta humana de respuesta cuando algo sale mal.</p>
+          <div class="hero-actions"><button class="primary" data-screen="shield">Ver acciones prioritarias →</button><button class="secondary" data-screen="incident">Simular incidente</button></div>
+        </div>
+        <div class="readiness"><div class="ring"><span>60%</span></div><div><span class="eyebrow">PREPARACIÓN</span><strong>3 de 5 controles</strong><small>requieren seguimiento</small></div></div>
+      </div>
+      <div class="grid-3">
+        <article class="metric"><span>1</span><strong>coordinador</strong><small>humano asignado</small></article>
+        <article class="metric"><span>3</span><strong>acciones</strong><small>prioridad alta/media</small></article>
+        <article class="metric"><span>0</span><strong>decisiones</strong><small>tomadas por IA</small></article>
+      </div>
+      <div class="info-banner"><strong>Regla del sistema:</strong> la IA recomienda; una verificación determinista o una persona nombrada confirma. Nunca certificamos que una empresa esté “a salvo”.</div>
+    </section>
+
+    <section id="shield" class="screen">
+      <div class="section-head"><div><span class="eyebrow">PREVENCIÓN</span><h2>Mi Escudo</h2><p>Empieza por lo que más afecta la continuidad del negocio.</p></div><div class="mini-score">60%<small>preparación</small></div></div>
+      <div id="controls" class="control-list"></div>
+      <div class="ai-note"><span>✦</span><div><strong>Recomendación IA · simulada</strong><p>Prioriza MFA y respaldos antes de tareas de menor impacto. Esta sugerencia no es una certificación y requiere verificación humana o determinista.</p></div></div>
+    </section>
+
+    <section id="incident" class="screen">
+      <div class="incident-banner"><div><span class="eyebrow">MODO INCIDENTE · SIMULADO</span><h2>Respira. Sigue el orden.</h2><p>Este flujo no contacta atacantes, no paga rescates y no decide notificaciones automáticamente.</p></div><button class="secondary" data-screen="coordinator">Ver coordinador</button></div>
+      <div class="steps" id="steps"></div>
+      <div class="incident-panel"><div class="severity"><span class="severity-dot"></span><div><strong>Severidad: Alta</strong><small>Interrupción potencial de correo y archivos</small></div></div><div class="owner"><strong>Próximo responsable</strong><span>Proveedor TI + coordinador humano</span></div><button id="advance" class="primary">Marcar paso revisado →</button></div>
+      <div class="warning"><strong>Protección:</strong> preservar evidencia antes de borrar, reinstalar o modificar sistemas. Las acciones irreversibles requieren autorización humana.</div>
+    </section>
+
+    <section id="coordinator" class="screen">
+      <div class="section-head"><div><span class="eyebrow">OPERACIÓN</span><h2>Coordinador</h2><p>Una vista para saber quién hace qué y cuándo escalar.</p></div><span class="capacity">Capacidad: 2 incidentes simultáneos</span></div>
+      <div class="case-card"><div class="case-top"><div><span class="case-id">INC-026 · SIMULADO</span><h3>Clínica Dental Sonríe</h3></div><span class="high">ALTA</span></div><div class="case-grid"><div><small>Propietario</small><strong>Laura · administradora</strong></div><div><small>Proveedor TI</small><strong>Soporte Norte</strong></div><div><small>Siguiente acción</small><strong>Preservar evidencia</strong></div><div><small>Deadline</small><strong>Hoy · 18:00</strong></div></div><div class="case-footer"><span>Escalar si: datos de pacientes afectados</span><button class="secondary" id="close-case">Registrar cierre simulado</button></div></div>
+      <div class="triage"><div><span>1</span><strong>Alta</strong><small>servicio caído / datos sensibles</small></div><div><span>2</span><strong>Media</strong><small>control degradado, operación activa</small></div><div><span>3</span><strong>Baja</strong><small>higiene o seguimiento</small></div></div>
+    </section>
+  </main>
+</div>
+<div id="toast" class="toast" role="status"></div>
+<script src="script.js"></script>
+</body>
+</html>
