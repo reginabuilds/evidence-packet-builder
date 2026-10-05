@@ -1,48 +1,51 @@
-# PERSONA TEST — WEEK 07
+# PERSONA TEST — WEEK 08 · ESCUDO PyME
 
 ## Synthetic user
 
-**Doña Mari, 54** — sells food outside a metro station, uses WhatsApp but distrusts apps, reads slowly, and gives up silently when confused.
+**Doña Mari, 54** — owns a small dental clinic, uses WhatsApp regularly, distrusts complicated apps, reads slowly, and gives up silently when confused.
 
 ## Why this persona
 
-The primary user for this MVP is an institutional mobility-data analyst, not Doña Mari. The course still requires a synthetic-user test, so this persona is used to stress-test whether the key distinction between **signal** and **official change** is understandable without technical language.
+The primary user is a small Mexican SME owner/administrator. Doña Mari represents the synthetic median user for the test: she should not need cybersecurity vocabulary to understand the first action or the human escalation path.
 
 ## Test flow
 
-1. Open the dashboard.
-2. Identify what the green line and dashed line mean.
-3. Select the mismatch scenario.
-4. Run analysis.
-5. Read the coverage result.
-6. Decide whether the system has enough information to make a conclusion.
-7. Read the evidence package.
-8. Choose a human-review action.
+1. Open ESCUDO PyME.
+2. Identify what the first security action is.
+3. Open Mi Escudo.
+4. Read the simulated AI recommendation.
+5. Distinguish recommendation from verified/completed status.
+6. Open Incidentes.
+7. Advance through the simulated response steps.
+8. Identify the next owner and human coordinator.
+9. Open Coordinador and understand severity/capacity.
 
 ## Confusion log
 
-- “Representation mismatch” is technical language.
-- “Coverage” needs a short explanation.
-- “Simulated data” must be visible so demo values are not mistaken for live public data.
-- “Review recommended” must not be confused with “route officially changed.”
+- “MFA” may require a short plain-Spanish explanation.
+- The phrase “IA simulada” must be visible so the recommendation is not mistaken for a live security engine.
+- “Verificado” must not look identical to “recomendado”.
+- The incident flow must make the next human owner obvious.
+- The user must understand that ESCUDO does not contact attackers, pay ransom or decide irreversible actions automatically.
 
 ## Worst confusion and fix
 
-The strongest risk is that a user interprets the orange observed path as an official route change. The MVP therefore repeats the boundary in the evidence and review panels:
+The strongest risk is that a user interprets the AI recommendation as proof that the clinic is safe. The interface therefore repeats the boundary:
 
-> **The signal is evidence for review, not an official route change.**
+> **La IA recomienda; una persona verifica.**
 
-The coverage panel also states:
+The incident screen also makes the next owner explicit:
 
-> **Low coverage means unknown, not stable.**
+> **Proveedor TI + coordinador humano**
 
 ## Result
 
-- The two path layers are distinguishable from the legend.
-- Low coverage is clearly presented as uncertainty rather than stability.
-- The analyst owns the final decision.
-- The product does not publish or sanction automatically.
+- The first action is visually obvious.
+- Recommendation and verification are separated.
+- The incident flow identifies a human owner.
+- Coordinator capacity is explicit.
+- Synthetic-data and simulation labels are visible.
 
 ## Production follow-up
 
-Replace “representation mismatch” with plainer language such as “Observed operation differs from the official representation” if testing shows the technical phrase slows comprehension.
+If real users still confuse recommendation with verification, replace technical security terms with even plainer Spanish and keep the human-verification state visually dominant.
