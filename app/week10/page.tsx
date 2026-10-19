@@ -1,0 +1,1 @@
+export default function Week10Page() { return <main style={{minHeight:'100vh',margin:0,padding:0}}><iframe src='/compra-con-calma/index.html' title='Compra con Calma — revisión antes de pagar' style={{width:'100%',height:'100vh',border:0,display:'block'}} /></main>; }

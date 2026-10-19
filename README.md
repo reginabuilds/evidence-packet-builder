@@ -37,3 +37,14 @@ The ESCUDO PyME interaction is implemented as a static HTML/CSS/JS demo embedded
 ## Security floor
 
 No secrets are committed. No real personal data is used. No persistent personal data is stored. AI is explicitly labeled as simulated and recommendations cannot perform irreversible actions.
+
+
+## Week 10 — Compra con Calma
+
+A separate buyer-side pre-checkout regret-prevention prototype is available at /week10 after deployment. It summarizes user-entered cost, return-policy understanding and evidence type, then surfaces unresolved checks without ranking sellers or deciding whether to buy.
+
+- [Week 10 packet](./docs/PACKET_WEEK10_COMPRA_CON_CALMA.md)
+- [Week 10 persona protocol](./docs/PERSONA_WEEK10_COMPRA_CON_CALMA.md)
+- [Week 10 build log](./docs/BUILDCHAT_WEEK10_COMPRA_CON_CALMA.md)
+
+Persona testing and deployed-browser verification must be recorded after they are actually performed.
