@@ -37,3 +37,33 @@ The ESCUDO PyME interaction is implemented as a static HTML/CSS/JS demo embedded
 ## Security floor
 
 No secrets are committed. No real personal data is used. No persistent personal data is stored. AI is explicitly labeled as simulated and recommendations cannot perform irreversible actions.
+
+
+---
+
+# Week 11 — Agua a Tiempo MX
+
+**Role:** Regina / USER. This is the Week 11 household water-readiness slice; Week 7 and Week 8 artifacts above remain preserved.
+
+The home screen now opens the Agua a Tiempo MX prototype. It demonstrates an editable manual reserve estimate, a clearly simulated sensor feed, a pending sample supply notice with source/owner/update fields, a correction route, and a household preparation checklist.
+
+## Week 11 boundaries
+- All readings and incident notices are synthetic and visibly labeled.
+- Reserve days are a deterministic, indicative calculation using 70 L/person/day, not an ML prediction or guarantee.
+- No real SMS, live utility feed, sensor hardware, repair dispatch, or official confirmation is connected.
+- The service design requires basic notices to remain free and accessible via SMS or an agreed offline route; the prototype does not implement message delivery.
+- No personal data is sent to a server or persisted to a database.
+
+## Week 11 artifacts
+- [Packet before code](./docs/PACKET_WEEK11_AGUA_A_TIEMPO.md)
+- [Implementation prompt and acceptance criteria](./docs/IMPLEMENTATION_PROMPT_WEEK11_AGUA_A_TIEMPO.md)
+- [Mechanical test log](./docs/TEST_LOG_WEEK11.md)
+- [Synthetic persona test log](./PERSONA_WEEK11.md)
+- [Demo video script](./DEMO_WEEK11.md)
+- [Session decisions and next move](./DECISIONS.md)
+
+## Run locally
+```bash
+npm install
+npm run dev
+```
